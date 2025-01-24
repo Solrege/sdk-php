@@ -61,7 +61,10 @@ class MPDefaultHttpClient implements MPHttpClient
         $this->httpRequest->setOptionArray($request_options);
         $api_result = $this->httpRequest->execute();
         $status_code = $this->httpRequest->getInfo(CURLINFO_HTTP_CODE);
-        $content = json_decode($api_result, true);
+        $content = [];
+        if ($status_code !== 204) {
+            $content = json_decode($api_result, true);
+        }
         $mp_response = new MPResponse($status_code, $content);
 
         if ($api_result === false) {
